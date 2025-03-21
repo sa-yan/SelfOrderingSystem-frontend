@@ -1,0 +1,14 @@
+.app {
+    min-height: 100vh;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+}
+
+.app.dark {
+    background-color: #242424;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
