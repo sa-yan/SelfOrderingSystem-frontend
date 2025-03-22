@@ -1,24 +1,69 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Header from '../components/Header';
 import { useCart } from '../context/CartContext';
-import { Link } from 'react-router-dom';
-import { menuItems } from '../data/menuData';
+import { Link, useNavigate } from 'react-router-dom';
 import './Cart.css';
 
 const Cart = () => {
-    const { cartItems, addToCart, removeFromCart } = useCart();
+    const { cartItems, addToCart, removeFromCart, clearCart } = useCart();
+    const [tableNumber, setTableNumber] = useState('');
+    const [isProcessing, setIsProcessing] = useState(false);
+    const [error, setError] = useState('');
+    const [menuItems, setMenuItems] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // Fetch menu items to get current prices and availability
+        axios.get('http://localhost:8080/api/menu')
+            .then(response => {
+                setMenuItems(response.data);
+            })
+            .catch(error => console.error('Error fetching menu items:', error));
+    }, []);
 
     const cartItemsDetails = Object.keys(cartItems).map(id => {
-        const item = menuItems.find(item => item.id === parseInt(id));
-        return {
+        const item = menuItems.find(item => item.id === id);
+        return item ? {
             ...item,
             quantity: cartItems[id]
-        };
-    });
+        } : null;
+    }).filter(item => item !== null);
 
     const total = cartItemsDetails.reduce((sum, item) =>
         sum + (item.price * item.quantity), 0
     );
+
+    const handleCheckout = async () => {
+        if (!tableNumber) {
+            setError('Please enter a table number');
+            return;
+        }
+
+        setIsProcessing(true);
+        setError('');
+
+        const orderItems = cartItemsDetails.map(item => ({
+            menuItemId: item.id,
+            quantity: item.quantity
+        }));
+
+        const orderData = {
+            items: orderItems,
+            tableNumber: parseInt(tableNumber)
+        };
+
+        try {
+            const response = await axios.post('http://localhost:8080/api/order/', orderData);
+            clearCart();
+            navigate('/order-success', { state: { order: response.data } });
+        } catch (err) {
+            setError('Failed to place order. Please try again.');
+            console.error('Order error:', err);
+        } finally {
+            setIsProcessing(false);
+        }
+    };
 
     if (cartItemsDetails.length === 0) {
         return (
@@ -40,10 +85,10 @@ const Cart = () => {
                 <div className="cart-items">
                     {cartItemsDetails.map(item => (
                         <div key={item.id} className="cart-item">
-                            <img src={item.image} alt={item.name} />
+                            <img src={item.picUrl} alt={item.name} />
                             <div className="cart-item-info">
                                 <h3>{item.name}</h3>
-                                <p className="item-price">${item.price}</p>
+                                <p className="item-price">${item.price.toFixed(2)}</p>
                             </div>
                             <div className="cart-quantity-controls">
                                 <button className="quantity-btn" onClick={() => removeFromCart(item)}>-</button>
@@ -58,8 +103,26 @@ const Cart = () => {
                     ))}
                 </div>
                 <div className="cart-summary">
+                    <div className="table-number-input">
+                        <label htmlFor="tableNumber">Table Number:</label>
+                        <input
+                            type="number"
+                            id="tableNumber"
+                            value={tableNumber}
+                            onChange={(e) => setTableNumber(e.target.value)}
+                            min="1"
+                            required
+                        />
+                    </div>
+                    {error && <p className="error-message">{error}</p>}
                     <h3>Total: ${total.toFixed(2)}</h3>
-                    <button className="checkout-btn">Proceed to Checkout</button>
+                    <button 
+                        className="checkout-btn" 
+                        onClick={handleCheckout}
+                        disabled={isProcessing}
+                    >
+                        {isProcessing ? 'Processing...' : 'Place Order'}
+                    </button>
                 </div>
             </div>
         </>

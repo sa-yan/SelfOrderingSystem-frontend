@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { menuItems, categories } from '../data/menuData';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Header from './Header';
 import './Menu.css';
 import { useTheme } from '../context/ThemeContext';
@@ -9,6 +9,18 @@ const Menu = () => {
   const { isDarkTheme } = useTheme();
   const { cartItems, toggleCartItem } = useCart();
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [menuItems, setMenuItems] = useState([]);
+  const [categories, setCategories] = useState(['all']);
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/api/menu')
+      .then(response => {
+        setMenuItems(response.data);
+        const uniqueCategories = ['all', ...new Set(response.data.map(item => item.category))];
+        setCategories(uniqueCategories);
+      })
+      .catch(error => console.error('Error fetching menu items:', error));
+  }, []);
 
   const filteredItems = selectedCategory === 'all'
     ? menuItems
@@ -35,19 +47,22 @@ const Menu = () => {
 
         <div className="menu-items">
           {filteredItems.map(item => (
-            <div key={item.id} className="menu-item">
-              <img src={item.image} alt={item.name} className="item-image" />
+            <div key={item.id} className={`menu-item ${!item.isavailable ? 'out-of-stock' : ''}`}>
+              <img src={item.picUrl} alt={item.name} className="item-image" />
               <div className="item-info">
                 <h3>{item.name}</h3>
                 <p className="description">{item.description}</p>
                 <div className="price-cart-container">
                   <p className="price">${item.price}</p>
-                  <button
-                    className={`add-to-cart-btn ${cartItems[item.id] ? 'added' : ''}`}
-                    onClick={() => toggleCartItem(item)}
-                  >
-                    {cartItems[item.id] ? '✓' : '+'}
-                  </button>
+                  {!item.isavailable && <span className="unavailable-badge">Out of Stock</span>}
+                  {item.isavailable && (
+                    <button
+                      className={`add-to-cart-btn ${cartItems[item.id] ? 'added' : ''}`}
+                      onClick={() => toggleCartItem(item)}
+                    >
+                      {cartItems[item.id] ? '✓' : '+'}
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
