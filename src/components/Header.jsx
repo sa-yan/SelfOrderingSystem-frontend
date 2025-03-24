@@ -33,18 +33,12 @@ const Header = () => {
                 </button>
 
                 <nav className={`nav-menu ${isMenuOpen ? 'open' : ''}`}>
-                    <NavLink to="/" onClick={closeMenu} className={({ isActive }) => isActive ? 'active' : ''}>
+                    <NavLink to="/" onClick={closeMenu}>
                         Menu
                     </NavLink>
-                    <NavLink to="/about" onClick={closeMenu} className={({ isActive }) => isActive ? 'active' : ''}>
-                        About
+                    <NavLink to="/admin" onClick={closeMenu}>
+                        Admin
                     </NavLink>
-                    <NavLink to="/contact" onClick={closeMenu} className={({ isActive }) => isActive ? 'active' : ''}>
-                        Contact
-                    </NavLink>
-                </nav>
-
-                <div className="header-actions">
                     {!isCartPage && (
                         <Link to="/cart" className="cart-link" onClick={closeMenu}>
                             <FaShoppingCart />
@@ -55,7 +49,7 @@ const Header = () => {
                             )}
                         </Link>
                     )}
-                </div>
+                </nav>
             </div>
         </header>
     );

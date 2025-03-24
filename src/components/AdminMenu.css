@@ -1,0 +1,93 @@
+.admin-menu-container {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.admin-menu-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.admin-menu-form h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.admin-menu-form input,
+.admin-menu-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.admin-menu-form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.checkbox-container {
+    margin-bottom: 1rem;
+}
+
+.checkbox-container label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.checkbox-container input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+.admin-menu-form button {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #0984e3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.admin-menu-container.dark {
+    background-color: #242424;
+}
+
+.admin-menu-container.dark .admin-menu-form {
+    background: #2d3436;
+    color: white;
+}
+
+.admin-menu-container.dark input,
+.admin-menu-container.dark textarea {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: white;
+}
+
+.admin-menu-container.dark .checkbox-container {
+    color: white;
+}
+
+.admin-menu-container.dark button {
+    background-color: #0984e3;
+}
+
+.admin-menu-container.dark input[type="file"] {
+    color: white;
+}
+
+.admin-menu-container.dark input[type="file"]::-webkit-file-upload-button {
+    background-color: #0984e3;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
