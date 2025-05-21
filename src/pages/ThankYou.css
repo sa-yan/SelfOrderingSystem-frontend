@@ -1,0 +1,145 @@
+.thank-you-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f6fa;
+}
+
+.thank-you-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 2rem;
+    max-width: 400px;
+    width: 90%;
+    margin: 1rem;
+}
+
+.success-icon-container {
+    width: 64px;
+    height: 64px;
+    background-color: #e3fcef;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+}
+
+.success-icon {
+    width: 32px;
+    height: 32px;
+    color: #27ae60;
+}
+
+.thank-you-title {
+    font-size: 1.875rem;
+    font-weight: bold;
+    color: #27ae60;
+    margin-bottom: 1rem;
+}
+
+.order-details {
+    color: #4a5568;
+    margin-bottom: 1.5rem;
+}
+
+.order-number {
+    font-weight: 600;
+    margin: 0.5rem 0;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.view-orders-btn,
+.continue-shopping-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.view-orders-btn {
+    background-color: #27ae60;
+    color: white;
+}
+
+.view-orders-btn:hover {
+    background-color: #219a52;
+}
+
+.continue-shopping-btn {
+    background-color: #3498db;
+    color: white;
+}
+
+.continue-shopping-btn:hover {
+    background-color: #2980b9;
+}
+
+/* Dark theme styles */
+.dark .thank-you-container {
+    background-color: #242424;
+}
+
+.dark .thank-you-card {
+    background-color: #2d3436;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.dark .order-details {
+    color: #b2bec3;
+}
+
+.dark .success-icon-container {
+    background-color: rgba(39, 174, 96, 0.2);
+}
+
+/* Enhanced responsive styles */
+@media screen and (max-width: 768px) {
+    .thank-you-card {
+        padding: 1.5rem;
+        width: 85%;
+    }
+
+    .thank-you-title {
+        font-size: 1.5rem;
+    }
+
+    .success-icon-container {
+        width: 56px;
+        height: 56px;
+    }
+
+    .success-icon {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .thank-you-card {
+        padding: 1rem;
+        width: 90%;
+    }
+
+    .thank-you-title {
+        font-size: 1.3rem;
+    }
+
+    .order-details {
+        font-size: 0.9rem;
+    }
+
+    .action-buttons button,
+    .action-buttons a {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+    }
+}

@@ -1,0 +1,363 @@
+.menu-container {
+    padding: 1rem 2rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.menu-title {
+    text-align: center;
+    padding: 2rem 0 1rem 0;
+    background-color: transparent;
+}
+
+.menu-title h2 {
+    margin: 0;
+    color: #333;
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+.category-buttons {
+    margin: 2rem 0;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.category-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #f5f6fa;
+    color: #2d3436;
+}
+
+.category-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.category-btn.active {
+    background-color: #0984e3;
+    color: white;
+    box-shadow: 0 4px 12px rgba(9, 132, 227, 0.3);
+}
+
+.menu-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
+    gap: 2rem;
+    justify-content: center;
+}
+
+.menu-item {
+    width: 100%;
+    max-width: 300px;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff;
+}
+
+.menu-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.menu-item.out-of-stock {
+    opacity: 0.85;
+    filter: grayscale(0.6);
+}
+
+.menu-item.out-of-stock .item-info {
+    opacity: 0.9;
+}
+
+.menu-item.out-of-stock:hover {
+    transform: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.item-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.menu-item:hover .item-image {
+    transform: scale(1.05);
+}
+
+.item-info {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.price-cart-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.add-to-cart-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #0984e3;
+    color: white;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(9, 132, 227, 0.3);
+}
+
+.add-to-cart-btn:hover {
+    background-color: #0870c0;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(9, 132, 227, 0.4);
+}
+
+.add-to-cart-btn.added {
+    background-color: #27ae60;
+}
+
+.add-to-cart-btn.added:hover {
+    background-color: #219a52;
+}
+
+.item-info h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+    color: #2d3436;
+}
+
+.description {
+    font-size: 0.9rem;
+    color: #636e72;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.price {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #0984e3;
+    margin: 0.5rem 0 0 0;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.quantity-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.quantity-display {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Remove these styles as they're now in CartControl.css */
+.quantity-controls,
+.quantity-controls button,
+.quantity-controls span {
+    /* Delete these style blocks */
+}
+
+.unavailable-badge {
+    background-color: #e74c3c;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.dark .unavailable-badge {
+    background-color: #c0392b;
+}
+
+.dark .menu-title {
+    background-color: transparent;
+}
+
+.dark .menu-title h2 {
+    color: #fff;
+}
+
+.dark .menu-item {
+    background-color: #2d3436;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.dark .item-info h3,
+.dark .price {
+    color: #dfe6e9;
+}
+
+.dark .description {
+    color: #b2bec3;
+}
+
+.dark .category-btn {
+    background-color: #383f41;
+    color: #dfe6e9;
+}
+
+.dark .category-btn.active {
+    background-color: #0984e3;
+    color: white;
+}
+
+.dark .item-image {
+    background-color: #2c2c2c;
+}
+
+.dark .add-to-cart-btn {
+    background-color: #66b0ff;
+}
+
+.dark .add-to-cart-btn:hover {
+    background-color: #3d8be4;
+}
+
+.dark .quantity-display {
+    color: #fff;
+}
+
+.dark .quantity-btn {
+    background-color: #66b0ff;
+}
+
+.dark .quantity-btn:hover {
+    background-color: #3d8be4;
+}
+
+/* Enhanced responsive styles */
+@media screen and (max-width: 1024px) {
+    .menu-items {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .menu-container {
+        padding: 1rem;
+    }
+
+    .category-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .category-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .menu-items {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+    }
+
+    .item-info h3 {
+        font-size: 1.1rem;
+    }
+
+    .description {
+        font-size: 0.85rem;
+    }
+
+    .price {
+        font-size: 1.1rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .menu-title h2 {
+        font-size: 1.8rem;
+    }
+
+    .menu-items {
+        grid-template-columns: 1fr;
+    }
+
+    .item-image {
+        height: 180px;
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-container {
+        padding: 1rem;
+    }
+
+    .menu-title h2 {
+        font-size: 2rem;
+    }
+
+    .category-buttons {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .category-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .menu-items {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .menu-item {
+        max-width: none;
+    }
+
+    .item-image {
+        height: 150px;
+    }
+
+    .item-info {
+        padding: 1rem;
+    }
+
+    .item-info h3 {
+        font-size: 1.1rem;
+    }
+
+    .description {
+        font-size: 0.85rem;
+    }
+}

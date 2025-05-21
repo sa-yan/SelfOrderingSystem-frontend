@@ -1,0 +1,27 @@
+.app {
+    min-height: 100vh;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+}
+
+.app.dark {
+    background-color: #242424;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+    .app {
+        padding: 0 10px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .app {
+        padding: 0 5px;
+    }
+}

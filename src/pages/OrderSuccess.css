@@ -1,0 +1,151 @@
+.order-success-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.order-details {
+    background: #2d3436;
+    border-radius: 8px;
+    padding: 2rem;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.order-number {
+    color: #66b0ff;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.order-items {
+    margin: 1.5rem 0;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.order-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 1.5rem 0;
+    padding-top: 1rem;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.payment-section {
+    margin-top: 2rem;
+}
+
+.payment-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.payment-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    border: 2px solid #0984e3;
+    border-radius: 8px;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.payment-btn span {
+    font-size: 1.5rem;
+}
+
+.payment-btn:hover {
+    background: rgba(9, 132, 227, 0.1);
+}
+
+.payment-btn.selected {
+    background: #0984e3;
+}
+
+.payment-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.processing-payment {
+    text-align: center;
+    margin-top: 1rem;
+    color: #66b0ff;
+}
+
+.payment-confirmation {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.confirmation-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.confirm-btn {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.confirm-btn.paid {
+    background: #27ae60;
+    color: white;
+}
+
+.confirm-btn.unpaid {
+    background: #e74c3c;
+    color: white;
+}
+
+.confirm-btn:hover {
+    transform: translateY(-2px);
+}
+
+.confirm-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.processing {
+    margin-top: 1rem;
+    color: #66b0ff;
+}
+
+@media (max-width: 480px) {
+    .order-details {
+        padding: 1rem;
+    }
+
+    .payment-options {
+        grid-template-columns: 1fr;
+    }
+
+    .confirmation-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

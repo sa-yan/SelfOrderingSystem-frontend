@@ -1,0 +1,177 @@
+.admin-menu-container {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.admin-menu-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-menu-form h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.admin-menu-form input,
+.admin-menu-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.admin-menu-form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.checkbox-container {
+    margin-bottom: 1rem;
+}
+
+.checkbox-container label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.checkbox-container input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+.admin-menu-form button {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #0984e3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.admin-menu-container.dark {
+    background-color: #242424;
+}
+
+.admin-menu-container.dark .admin-menu-form {
+    background: #2d3436;
+    color: white;
+}
+
+.admin-menu-container.dark input,
+.admin-menu-container.dark textarea {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: white;
+}
+
+.admin-menu-container.dark .checkbox-container {
+    color: white;
+}
+
+.admin-menu-container.dark button {
+    background-color: #0984e3;
+}
+
+.admin-menu-container.dark input[type="file"] {
+    color: white;
+}
+
+.admin-menu-container.dark input[type="file"]::-webkit-file-upload-button {
+    background-color: #0984e3;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.spinner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid transparent;
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.admin-menu-form button.loading {
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+.admin-menu-form button:disabled {
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+.dark .admin-menu-form button:disabled {
+    background-color: #4a5568;
+}
+
+.dark .spinner {
+    border-top-color: #ffffff;
+}
+
+/* Enhanced responsive styles */
+@media screen and (max-width: 768px) {
+    .admin-menu-container {
+        padding: 1rem;
+    }
+
+    .admin-menu-form {
+        padding: 1.5rem;
+    }
+
+    .admin-menu-form h2 {
+        font-size: 1.5rem;
+    }
+
+    .admin-menu-form input,
+    .admin-menu-form textarea {
+        padding: 0.6rem;
+        font-size: 0.95rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .admin-menu-container {
+        padding: 0.5rem;
+    }
+
+    .admin-menu-form {
+        padding: 1rem;
+    }
+
+    .admin-menu-form button {
+        padding: 0.6rem;
+        font-size: 0.95rem;
+    }
+
+    .spinner-container {
+        font-size: 0.9rem;
+    }
+}
