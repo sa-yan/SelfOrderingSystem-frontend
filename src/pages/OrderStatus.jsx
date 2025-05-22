@@ -60,6 +60,18 @@ const OrderStatus = () => {
         }
     };
 
+    const formatDate = (dateString) => {
+        if (!dateString) return 'N/A';
+        const date = new Date(dateString);
+        return date.toLocaleString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
+            month: 'short',
+            day: 'numeric'
+        });
+    };
+
     return (
         <>
             <Header />
@@ -93,6 +105,7 @@ const OrderStatus = () => {
 
                             <div className="order-info">
                                 <p>Table Number: {selectedOrder.tableNumber}</p>
+                                <p>Order Time: {formatDate(selectedOrder.orderDate)}</p>
                                 <p>Total Amount: ${selectedOrder.totalAmount.toFixed(2)}</p>
                             </div>
 
@@ -142,6 +155,7 @@ const OrderStatus = () => {
                                         </div>
                                         <div className="order-list-details">
                                             <span>Table {order.tableNumber}</span>
+                                            <span>{formatDate(order.orderDate)}</span>
                                             <span>${order.totalAmount.toFixed(2)}</span>
                                         </div>
                                         <div className="order-list-items">

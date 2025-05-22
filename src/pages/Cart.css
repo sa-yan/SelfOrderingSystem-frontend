@@ -156,6 +156,35 @@
     cursor: not-allowed;
 }
 
+.email-input {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.email-input label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #fff;
+}
+
+.email-input input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+}
+
+.success-message {
+    color: #27ae60;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    background-color: rgba(39, 174, 96, 0.1);
+    border-radius: 4px;
+}
+
 @media (max-width: 768px) {
     .cart-container {
         margin: 1rem auto;

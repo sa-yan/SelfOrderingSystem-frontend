@@ -8,9 +8,11 @@ import './Cart.css';
 const Cart = () => {
     const { cartItems, addToCart, removeFromCart, clearCart } = useCart();
     const [tableNumber, setTableNumber] = useState('');
+    const [email, setEmail] = useState(''); // Add email state
     const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState('');
     const [menuItems, setMenuItems] = useState([]);
+    const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -40,8 +42,14 @@ const Cart = () => {
             return;
         }
 
+        if (!email || !email.trim()) {
+            setError('Please enter your email address');
+            return;
+        }
+
         setIsProcessing(true);
         setError('');
+        setSuccessMessage('');
 
         const orderItems = cartItemsDetails.map(item => ({
             menuItemId: item.id,
@@ -50,22 +58,27 @@ const Cart = () => {
 
         const orderData = {
             items: orderItems,
-            tableNumber: parseInt(tableNumber)
+            tableNumber: parseInt(tableNumber),
+            email: email.trim()
         };
 
         try {
             const response = await axios.post('http://localhost:8080/api/order/', orderData);
-            // Navigate to payment with order details
-            navigate('/payment', {
-                state: {
-                    order: response.data,
-                    items: cartItemsDetails,
-                    tableNumber: tableNumber,
-                    total: total
-                }
-            });
+            setSuccessMessage('Order placed successfully! Proceeding to payment...');
+
+            // Navigate to payment after a brief delay
+            setTimeout(() => {
+                navigate('/payment', {
+                    state: {
+                        order: response.data,
+                        items: cartItemsDetails,
+                        tableNumber: tableNumber,
+                        total: total
+                    }
+                });
+            }, 1500);
         } catch (err) {
-            setError('Failed to place order. Please try again.');
+            setError(err.response?.data?.message || 'Failed to place order. Please try again.');
             console.error('Order error:', err);
         } finally {
             setIsProcessing(false);
@@ -121,7 +134,19 @@ const Cart = () => {
                             required
                         />
                     </div>
+                    <div className="table-number-input">
+                        <label htmlFor="email">Email Address:</label>
+                        <input
+                            type="email"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            placeholder="Enter your email address"
+                        />
+                    </div>
                     {error && <p className="error-message">{error}</p>}
+                    {successMessage && <p className="success-message">{successMessage}</p>}
                     <h3>Total: ${total.toFixed(2)}</h3>
                     <button
                         className="checkout-btn"

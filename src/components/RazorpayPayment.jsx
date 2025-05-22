@@ -34,10 +34,7 @@ const RazorpayPayment = () => {
         setError(null);
 
         try {
-            // Format amount to whole number
             const amountInRupees = Math.round(orderDetails.total);
-
-            // Create order using query parameters
             const response = await fetch(
                 `http://localhost:8080/api/payment/createOrder?amount=${amountInRupees}&currency=INR`,
                 { method: 'POST' }
@@ -56,38 +53,47 @@ const RazorpayPayment = () => {
                 name: "Restaurant Name",
                 description: `Order #${orderDetails.order.id}`,
                 order_id: order.id,
-                handler: function (response) {
-                    // Payment success handler with query parameters
-                    fetch(
-                        `http://localhost:8080/api/payment/confirm?orderId=${orderDetails.order.id}&razorpayPaymentId=${response.razorpay_payment_id}`,
-                        { method: 'POST' }
-                      )                      
-                        .then(res => {
-                            if (!res.ok) throw new Error('Payment confirmation failed');
-                            return res.text();
-                        })
-                        .then(() => {
-                            clearCart();
-                            // Navigate directly to thank you page
-                            navigate('/thankyou', {
-                                state: {
-                                    orderId: orderDetails.order.id,
-                                    paymentId: response.razorpay_payment_id,
-                                    orderDetails: orderDetails
-                                }
-                            });
-                        })
-                        .catch(err => {
-                            console.error("Failed to confirm payment:", err);
-                            setError("Payment succeeded but failed to update order status.");
+                handler: async function (response) {
+                    try {
+                        // Disable the pay button immediately after payment
+                        setIsLoading(true);
+
+                        const confirmResponse = await fetch(
+                            `http://localhost:8080/api/payment/confirm?orderId=${orderDetails.order.id}&razorpayPaymentId=${response.razorpay_payment_id}`,
+                            { method: 'POST' }
+                        );
+
+                        if (!confirmResponse.ok) {
+                            throw new Error('Payment confirmation failed');
+                        }
+
+                        // Clear cart and navigate immediately
+                        clearCart();
+                        // Navigate to thank you page and replace current history entry
+                        navigate('/thankyou', {
+                            state: {
+                                orderId: orderDetails.order.id,
+                                paymentId: response.razorpay_payment_id,
+                                orderDetails: orderDetails
+                            },
+                            replace: true // This will replace the current entry in history
                         });
+                    } catch (err) {
+                        console.error("Failed to process payment:", err);
+                        setError("Payment succeeded but failed to complete the process.");
+                        setIsLoading(false); // Re-enable the button only on error
+                    }
                 },
                 prefill: {
-                    name: "Customer Name",
-                    email: "customer@example.com"
+                    name: "Customer Name"
                 },
                 theme: {
                     color: "#3399cc"
+                },
+                modal: {
+                    ondismiss: function () {
+                        setIsLoading(false); // Re-enable the button if modal is dismissed
+                    }
                 }
             };
 
