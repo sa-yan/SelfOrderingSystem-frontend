@@ -1,11 +1,16 @@
+/* Container centers everything on the screen */
 .admin-login-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    padding: 1rem;
     background-color: #f5f6fa;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
+/* Login form styling */
 .admin-login-form {
     background: white;
     padding: 2rem;
@@ -13,13 +18,16 @@
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     width: 100%;
     max-width: 400px;
+    box-sizing: border-box;
 }
 
 .admin-login-form h2 {
     text-align: center;
     margin-bottom: 2rem;
+    font-size: 1.5rem;
 }
 
+/* Inputs and buttons */
 .admin-login-form input,
 .admin-login-form button {
     width: 100%;
@@ -28,11 +36,7 @@
     border-radius: 4px;
     font-size: 1rem;
     box-sizing: border-box;
-    min-width: 300px;
-}
-
-.admin-login-form input {
-    border: 1px solid #ddd;
+    border: 1px solid #ccc;
 }
 
 .admin-login-form button {
@@ -47,6 +51,7 @@
     background-color: #0773c5;
 }
 
+/* Dark theme styles */
 .admin-login-container.dark {
     background-color: #242424;
 }
@@ -64,4 +69,21 @@
 
 .admin-login-container.dark button {
     background-color: #0984e3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .admin-login-form {
+        padding: 1.5rem 1rem;
+    }
+
+    .admin-login-form h2 {
+        font-size: 1.25rem;
+    }
+
+    .admin-login-form input,
+    .admin-login-form button {
+        font-size: 0.95rem;
+        padding: 0.7rem;
+    }
 }

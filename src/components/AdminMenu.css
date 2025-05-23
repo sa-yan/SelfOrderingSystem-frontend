@@ -1,7 +1,12 @@
 .admin-menu-container {
-    padding: 2rem;
-    max-width: 800px;
-    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    background-color: #f5f6fa;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 .admin-menu-form {
@@ -9,11 +14,15 @@
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
 }
 
 .admin-menu-form h2 {
     text-align: center;
     margin-bottom: 2rem;
+    font-size: 1.75rem;
 }
 
 .admin-menu-form input,
@@ -23,6 +32,8 @@
     margin-bottom: 1rem;
     border: 1px solid #ddd;
     border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
 }
 
 .admin-menu-form textarea {
@@ -35,14 +46,21 @@
 }
 
 .checkbox-container label {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem; /* reduce spacing between checkbox and text */
+    font-size: 1rem;
+    cursor: pointer;
 }
 
 .checkbox-container input[type="checkbox"] {
-    width: auto;
     margin: 0;
+}
+
+
+.admin-menu-form input[type="file"] {
+    padding: 0.4rem 0;
+    font-size: 0.95rem;
 }
 
 .admin-menu-form button {
@@ -52,7 +70,13 @@
     color: white;
     border: none;
     border-radius: 4px;
+    font-size: 1rem;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.admin-menu-form button:hover:not(:disabled) {
+    background-color: #0773c5;
 }
 
 .admin-menu-container.dark {
@@ -71,15 +95,11 @@
     color: white;
 }
 
-.admin-menu-container.dark .checkbox-container {
+.admin-menu-container.dark input[type="file"] {
     color: white;
 }
 
-.admin-menu-container.dark button {
-    background-color: #0984e3;
-}
-
-.admin-menu-container.dark input[type="file"] {
+.admin-menu-container.dark .checkbox-container {
     color: white;
 }
 
@@ -92,6 +112,7 @@
     cursor: pointer;
 }
 
+/* Spinner and loading button */
 .spinner-container {
     display: flex;
     align-items: center;
@@ -109,20 +130,11 @@
 }
 
 @keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
-.admin-menu-form button.loading {
-    opacity: 0.8;
-    cursor: not-allowed;
-}
-
+.admin-menu-form button.loading,
 .admin-menu-form button:disabled {
     opacity: 0.8;
     cursor: not-allowed;
@@ -136,12 +148,8 @@
     border-top-color: #ffffff;
 }
 
-/* Enhanced responsive styles */
+/* Responsive styles */
 @media screen and (max-width: 768px) {
-    .admin-menu-container {
-        padding: 1rem;
-    }
-
     .admin-menu-form {
         padding: 1.5rem;
     }
@@ -152,18 +160,18 @@
 
     .admin-menu-form input,
     .admin-menu-form textarea {
-        padding: 0.6rem;
+        padding: 0.7rem;
         font-size: 0.95rem;
     }
 }
 
 @media screen and (max-width: 480px) {
-    .admin-menu-container {
-        padding: 0.5rem;
-    }
-
     .admin-menu-form {
         padding: 1rem;
+    }
+
+    .admin-menu-form h2 {
+        font-size: 1.3rem;
     }
 
     .admin-menu-form button {

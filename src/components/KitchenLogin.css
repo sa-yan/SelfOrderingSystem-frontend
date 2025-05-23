@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
+    padding: 1rem 2rem;  /* Added horizontal padding */
     background-color: #f5f6fa;
 }
 
@@ -14,6 +14,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
+    box-sizing: border-box;  /* make padding included in width */
 }
 
 .kitchen-login-title {
@@ -31,11 +32,12 @@
 
 .form-input {
     width: 100%;
-    padding: 0.8rem;
+    padding: 0.8rem 1rem;  /* Added horizontal padding */
     border: 1px solid #ddd;
     border-radius: 6px;
     font-size: 1rem;
     transition: border-color 0.3s ease;
+    box-sizing: border-box; /* ensures padding inside input */
 }
 
 .form-input:focus {
@@ -45,7 +47,7 @@
 
 .login-btn {
     width: 100%;
-    padding: 0.8rem;
+    padding: 0.8rem 1rem; /* added horizontal padding */
     background: #0984e3;
     color: white;
     border: none;
@@ -102,7 +104,7 @@
 
     .form-input,
     .login-btn {
-        padding: 0.7rem;
+        padding: 0.7rem 1rem;
         font-size: 0.95rem;
     }
 }
