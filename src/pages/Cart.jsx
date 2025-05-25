@@ -17,7 +17,7 @@ const Cart = () => {
 
     useEffect(() => {
         // Fetch menu items to get current prices and availability
-        axios.get('http://localhost:8080/api/menu')
+        axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/api/menu`)
             .then(response => {
                 setMenuItems(response.data);
             })
@@ -63,7 +63,7 @@ const Cart = () => {
         };
 
         try {
-            const response = await axios.post('http://localhost:8080/api/order/', orderData);
+            const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/api/order/`, orderData);
             setSuccessMessage('Order placed successfully! Proceeding to payment...');
 
             // Navigate to payment after a brief delay

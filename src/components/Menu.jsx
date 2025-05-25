@@ -14,7 +14,8 @@ const Menu = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/menu')
+    console.log(`${import.meta.env.VITE_REACT_APP_API_URL}`)
+    axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/api/menu`)
       .then(response => {
         setMenuItems(response.data);
         const uniqueCategories = ['all', ...new Set(response.data.map(item => item.category))];

@@ -36,7 +36,7 @@ const RazorpayPayment = () => {
         try {
             const amountInRupees = Math.round(orderDetails.total);
             const response = await fetch(
-                `http://localhost:8080/api/payment/createOrder?amount=${amountInRupees}&currency=INR`,
+                `${import.meta.env.VITE_REACT_APP_API_URL}/api/payment/createOrder?amount=${amountInRupees}&currency=INR`,
                 { method: 'POST' }
             );
 
@@ -59,7 +59,7 @@ const RazorpayPayment = () => {
                         setIsLoading(true);
 
                         const confirmResponse = await fetch(
-                            `http://localhost:8080/api/payment/confirm?orderId=${orderDetails.order.id}&razorpayPaymentId=${response.razorpay_payment_id}`,
+                            `${import.meta.env.VITE_REACT_APP_API_URL}/api/payment/confirm?orderId=${orderDetails.order.id}&razorpayPaymentId=${response.razorpay_payment_id}`,
                             { method: 'POST' }
                         );
 

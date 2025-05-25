@@ -20,7 +20,7 @@ const OrderStatus = () => {
 
     const fetchAllOrders = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/kitchen/orders');
+            const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/api/kitchen/orders`);
             // Filter delivered orders and sort by date (newest first)
             const activeOrders = response.data
                 .filter(order => order.orderStatus !== 'DELIVERED')

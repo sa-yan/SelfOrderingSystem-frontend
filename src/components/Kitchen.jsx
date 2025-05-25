@@ -29,7 +29,7 @@ const Kitchen = () => {
 
     const fetchOrders = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/kitchen/orders');
+            const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/api/kitchen/orders`);
             console.log('Fetched orders:', response.data); // ← Add this
             setOrders(response.data);
         } catch (error) {
@@ -50,7 +50,7 @@ const Kitchen = () => {
                 'DELIVERED': 'deliver'
             };
 
-            const endpoint = `http://localhost:8080/api/kitchen/order/${orderId}/${actionToEndpoint[action]}`;
+            const endpoint = `${import.meta.env.VITE_REACT_APP_API_URL}/api/kitchen/order/${orderId}/${actionToEndpoint[action]}`;
             // console.log('Request endpoint:', endpoint);
 
             const response = await axios.patch(endpoint);
