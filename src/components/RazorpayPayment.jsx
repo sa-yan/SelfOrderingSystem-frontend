@@ -16,6 +16,7 @@ const RazorpayPayment = () => {
         if (!orderDetails) {
             navigate('/cart');
         }
+        console.log(import.meta.env.VITE_REACT_APP_API_URL);
     }, [orderDetails, navigate]);
 
     useEffect(() => {
