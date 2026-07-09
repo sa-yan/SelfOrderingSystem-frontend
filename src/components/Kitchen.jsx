@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FaRegClock, FaChair } from 'react-icons/fa';
 import axios from 'axios';
 import KitchenLogin from './KitchenLogin';
 import { useTheme } from '../context/ThemeContext';
@@ -30,7 +31,6 @@ const Kitchen = () => {
     const fetchOrders = async () => {
         try {
             const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/api/kitchen/orders`);
-            console.log('Fetched orders:', response.data); // ← Add this
             setOrders(response.data);
         } catch (error) {
             console.error('Error fetching orders:', error);
@@ -41,7 +41,6 @@ const Kitchen = () => {
     const updateOrderStatus = async (orderId, action) => {
         try {
             setIsLoading(prev => ({ ...prev, [orderId]: true }));
-            console.log(`Updating order ${orderId} to ${action}`);
 
             // Map the actions to the correct endpoint paths
             const actionToEndpoint = {
@@ -51,14 +50,10 @@ const Kitchen = () => {
             };
 
             const endpoint = `${import.meta.env.VITE_REACT_APP_API_URL}/api/kitchen/order/${orderId}/${actionToEndpoint[action]}`;
-            // console.log('Request endpoint:', endpoint);
-
-            const response = await axios.patch(endpoint);
-            // console.log('Update response:', response.data);
-
+            await axios.patch(endpoint);
             await fetchOrders();
         } catch (error) {
-            // console.error('Error updating order:', error);
+            console.error('Error updating order:', error);
             alert('Failed to update order status. Please try again.');
         } finally {
             setIsLoading(prev => ({ ...prev, [orderId]: false }));
@@ -85,28 +80,16 @@ const Kitchen = () => {
 
 
     const getFilteredOrders = () => {
-        if (filterStatus === 'ALL') {
-            return [...orders].sort((a, b) => {
-                const priority = {
-                    PLACED: 0,
-                    PREPARING: 1,
-                    READY: 2,
-                    DELIVERED: 3
-                };
-                return priority[a.orderStatus?.toUpperCase()] - priority[b.orderStatus?.toUpperCase()] ||
-                    new Date(b.orderDate) - new Date(a.orderDate);
-            });
-        }
-    
-        const filtered = orders.filter(order => {
-            const backendStatus = order.orderStatus?.toUpperCase();
-            const filterTarget = filterStatus.toUpperCase();
-            console.log(`Comparing ${backendStatus} === ${filterTarget}`);
-            return backendStatus === filterTarget;
-        });
-    
-        console.log(`Filtered for ${filterStatus}:`, filtered);
-        return filtered;
+        // "All Orders" shows the active board only — delivered orders drop off it
+        // (still viewable under the Delivered tab).
+        const list = filterStatus === 'ALL'
+            ? orders.filter(order => order.orderStatus?.toUpperCase() !== ORDER_STATUS.DELIVERED)
+            : orders.filter(order =>
+                order.orderStatus?.toUpperCase() === filterStatus.toUpperCase()
+            );
+
+        // Newest first, so orders you just placed or actioned surface at the top
+        return [...list].sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
     };
     
     
@@ -162,7 +145,7 @@ const Kitchen = () => {
                             </span>
                         </div>
                         <div className="order-time">
-
+                            <FaRegClock />
                             <span>Ordered: {formatDate(order.orderDate)}</span>
                         </div>
                         <div className="order-items">
@@ -179,8 +162,8 @@ const Kitchen = () => {
                             )}
                         </div>
                         <div className="order-info">
-                            <p>Table: {order.tableNumber || 'N/A'}</p>
-                            <p>Total: ${order.totalAmount.toFixed(2)}</p>
+                            <p><FaChair /> Table: {order.tableNumber || 'N/A'}</p>
+                            <p>Total: ₹{(order.totalAmount ?? 0).toFixed(2)}</p>
                         </div>
                         <div className="order-actions">
                             {order.orderStatus === ORDER_STATUS.PLACED && (
@@ -210,10 +193,6 @@ const Kitchen = () => {
                                     {isLoading[order.id] ? 'Processing...' : 'Mark as Delivered'}
                                 </button>
                             )}
-                        </div>
-                        {/* Add debug info */}
-                        <div className="debug-info" style={{ fontSize: '12px', color: '#666' }}>
-                            Status: {order.orderStatus}
                         </div>
                     </div>
                 ))}

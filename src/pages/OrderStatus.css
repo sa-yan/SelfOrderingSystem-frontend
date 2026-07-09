@@ -1,120 +1,191 @@
 .order-status-container {
     min-height: calc(100vh - 64px);
-    padding: 2rem;
-    background-color: #f5f6fa;
+    padding: 2rem 1.25rem 3rem;
+    background-color: var(--bg);
 }
 
 .order-status-content {
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    animation: fade-up 0.4s ease;
 }
 
+.order-status-content>h2 {
+    margin: 0;
+    color: var(--text);
+    font-size: clamp(1.5rem, 4vw, 2rem);
+}
+
+/* ---- Tracking form ---- */
 .tracking-form {
     display: flex;
-    gap: 1rem;
-    margin: 2rem 0;
+    gap: 0.75rem;
+    margin: 1.5rem 0 2rem;
 }
 
 .tracking-form input {
     flex: 1;
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    min-width: 0;
+    padding: 0.75rem 1.25rem;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-full);
     font-size: 1rem;
+    background-color: var(--bg-card);
+    color: var(--text);
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.tracking-form input::placeholder {
+    color: var(--text-muted);
+}
+
+.tracking-form input:focus {
+    border-color: var(--primary);
+    box-shadow: var(--ring);
 }
 
 .tracking-form button {
-    padding: 0.8rem 1.5rem;
-    background: #0984e3;
+    padding: 0.75rem 1.6rem;
+    background: var(--primary-gradient);
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: var(--radius-full);
+    font-size: 0.95rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 14px rgba(234, 88, 12, 0.35);
+    transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+    white-space: nowrap;
 }
 
-.tracking-form button:hover {
-    background: #0773c5;
+.tracking-form button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(234, 88, 12, 0.45);
+    filter: brightness(1.05);
+}
+
+.tracking-form button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .error-message {
-    color: #e74c3c;
+    color: var(--danger);
+    background: var(--danger-soft);
     margin: 1rem 0;
-    padding: 0.8rem;
-    background: #fdeaea;
-    border-radius: 6px;
+    padding: 0.7rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.92rem;
+    font-weight: 500;
 }
 
+/* ---- Selected order ---- */
 .order-details {
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid #eee;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px dashed var(--border-strong);
 }
 
 .status-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
 }
 
+.status-header h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.3rem;
+}
+
+/* Status badges — token driven */
 .status-badge {
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 500;
+    padding: 0.4rem 0.9rem;
+    border-radius: var(--radius-full);
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: 1px solid currentColor;
+    white-space: nowrap;
 }
 
 .status-badge.placed {
-    background: #ffeaa7;
-    color: #d69e2e;
+    background: var(--warning-soft);
+    color: var(--warning);
 }
 
 .status-badge.preparing {
-    background: #81ecec;
-    color: #00838f;
+    background: var(--info-soft);
+    color: var(--info);
 }
 
-.status-badge.ready {
-    background: #55efc4;
-    color: #00b894;
-}
-
+.status-badge.ready,
 .status-badge.delivered {
-    background: #a8e6cf;
-    color: #3d8168;
+    background: var(--success-soft);
+    color: var(--success);
+}
+
+.order-info {
+    background: var(--bg-inset);
+    border-radius: var(--radius);
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.25rem;
+}
+
+.order-info p {
+    margin: 0.25rem 0;
+    color: var(--text-muted);
+    font-size: 0.94rem;
 }
 
 .order-items {
-    margin: 1.5rem 0;
+    margin: 1.25rem 0;
+}
+
+.order-items h4 {
+    margin: 0 0 0.5rem;
+    color: var(--text);
 }
 
 .item {
     display: flex;
     justify-content: space-between;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #eee;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-size: 0.95rem;
 }
 
+.item span:last-child {
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+/* ---- Timeline ---- */
 .status-timeline {
     display: flex;
     justify-content: space-between;
-    margin-top: 3rem;
+    margin-top: 2.5rem;
     position: relative;
 }
 
 .status-timeline::before {
     content: '';
     position: absolute;
-    top: 15px;
+    top: 14px;
     left: 0;
     right: 0;
-    height: 2px;
-    background: #ddd;
+    height: 3px;
+    border-radius: var(--radius-full);
+    background: var(--border);
     z-index: 1;
 }
 
@@ -124,60 +195,125 @@
     align-items: center;
     gap: 0.5rem;
     z-index: 2;
+    flex: 1;
+    text-align: center;
+}
+
+.timeline-point span {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    max-width: 110px;
 }
 
 .point {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    background: white;
-    border: 2px solid #ddd;
+    background: var(--bg-card);
+    border: 2.5px solid var(--border-strong);
+    transition: background-color var(--transition), border-color var(--transition), box-shadow var(--transition);
 }
 
 .timeline-point.completed .point {
-    background: #0984e3;
-    border-color: #0984e3;
+    background: var(--primary-gradient);
+    border-color: transparent;
+}
+
+.timeline-point.completed span {
+    color: var(--text);
 }
 
 .timeline-point.current .point {
-    background: white;
-    border-color: #0984e3;
-    box-shadow: 0 0 0 3px rgba(9, 132, 227, 0.2);
+    background: var(--bg-card);
+    border-color: var(--primary);
+    box-shadow: var(--ring);
 }
 
-/* Dark theme */
-.dark .order-status-container {
-    background-color: #242424;
+.timeline-point.current span {
+    color: var(--primary);
+    font-weight: 700;
 }
 
-.dark .order-status-content {
-    background: #2d3436;
-    color: #dfe6e9;
+/* ---- Recent orders list ---- */
+.all-orders {
+    margin-top: 1.5rem;
 }
 
-.dark .tracking-form input {
-    background-color: #383f41;
-    border-color: #4a4a4a;
-    color: white;
+.all-orders h3 {
+    margin: 0 0 1rem;
+    color: var(--text);
 }
 
-.dark .item {
-    border-bottom-color: #404040;
+.orders-list {
+    display: grid;
+    gap: 1rem;
 }
 
-.dark .status-timeline::before {
-    background: #404040;
+.order-list-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.1rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
 }
 
-.dark .point {
-    background: #2d3436;
-    border-color: #404040;
+.order-list-item:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-md);
 }
 
-/* Responsive styles */
+.order-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.order-list-number {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text);
+}
+
+.order-list-details {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    margin-bottom: 0.6rem;
+}
+
+.order-list-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.order-list-items span {
+    background: var(--bg-inset);
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-full);
+}
+
+/* ---- Responsive ---- */
 @media (max-width: 768px) {
     .order-status-container {
-        padding: 1rem;
+        padding: 1rem 0.9rem 2rem;
+    }
+
+    .order-status-content {
+        padding: 1.25rem;
     }
 
     .tracking-form {
@@ -191,99 +327,25 @@
     }
 
     .status-timeline::before {
-        left: 15px;
-        width: 2px;
+        left: 13px;
+        width: 3px;
         height: 100%;
         top: 0;
+        right: auto;
     }
 
     .timeline-point {
         flex-direction: row;
         gap: 1rem;
         width: 100%;
+        text-align: left;
     }
-}
 
-.all-orders {
-    margin-top: 2rem;
-}
+    .timeline-point span {
+        max-width: none;
+    }
 
-.orders-list {
-    display: grid;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.order-list-item {
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 1px solid #eee;
-}
-
-.order-list-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.order-list-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-}
-
-.order-list-number {
-    font-weight: 600;
-    font-size: 1.1rem;
-}
-
-.order-list-details {
-    display: flex;
-    justify-content: space-between;
-    color: #666;
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-}
-
-.order-list-items {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    font-size: 0.85rem;
-    color: #666;
-}
-
-.order-list-items span {
-    background: #e9ecef;
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-}
-
-/* Dark theme additions */
-.dark .order-list-item {
-    background: #2d3436;
-    border-color: #404040;
-}
-
-.dark .order-list-details,
-.dark .order-list-items {
-    color: #b2bec3;
-}
-
-.dark .order-list-items span {
-    background: #383f41;
-}
-
-/* Responsive additions */
-@media (max-width: 768px) {
     .orders-list {
         grid-template-columns: 1fr;
-    }
-
-    .order-list-item {
-        padding: 0.75rem;
     }
 }

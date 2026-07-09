@@ -1,0 +1,193 @@
+/* ---- Design tokens ---- */
+:root {
+    /* Brand */
+    --primary: #ea580c;
+    --primary-hover: #c2410c;
+    --primary-light: #fb923c;
+    --primary-soft: rgba(234, 88, 12, 0.1);
+    --primary-gradient: linear-gradient(135deg, #f97316, #ea580c);
+
+    /* Status */
+    --success: #16a34a;
+    --success-soft: rgba(22, 163, 74, 0.12);
+    --danger: #dc2626;
+    --danger-soft: rgba(220, 38, 38, 0.1);
+    --warning: #d97706;
+    --warning-soft: rgba(217, 119, 6, 0.12);
+    --info: #2563eb;
+    --info-soft: rgba(37, 99, 235, 0.1);
+
+    /* Surfaces & text (light) */
+    --bg: #faf7f2;
+    --bg-card: #ffffff;
+    --bg-elevated: #ffffff;
+    --bg-inset: #f3efe8;
+    --text: #1f2428;
+    --text-muted: #6b7280;
+    --border: #e7e2d9;
+    --border-strong: #d6cfc3;
+
+    /* Shape & depth */
+    --radius-sm: 8px;
+    --radius: 14px;
+    --radius-lg: 20px;
+    --radius-full: 999px;
+    --shadow-sm: 0 1px 3px rgba(31, 26, 18, 0.07);
+    --shadow-md: 0 8px 24px rgba(31, 26, 18, 0.09);
+    --shadow-lg: 0 16px 40px rgba(31, 26, 18, 0.14);
+    --ring: 0 0 0 3px rgba(234, 88, 12, 0.25);
+
+    /* Type */
+    --font-body: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --font-display: 'Outfit', 'Inter', 'Segoe UI', system-ui, sans-serif;
+
+    /* Motion */
+    --transition: 0.2s ease;
+
+    color-scheme: light;
+}
+
+/* Dark theme — every element inside a `.dark` wrapper picks these up */
+.dark {
+    --primary: #f97316;
+    --primary-hover: #fb923c;
+    --primary-soft: rgba(249, 115, 22, 0.14);
+
+    --success: #4ade80;
+    --success-soft: rgba(74, 222, 128, 0.12);
+    --danger: #f87171;
+    --danger-soft: rgba(248, 113, 113, 0.12);
+    --warning: #fbbf24;
+    --warning-soft: rgba(251, 191, 36, 0.12);
+    --info: #60a5fa;
+    --info-soft: rgba(96, 165, 250, 0.12);
+
+    --bg: #121417;
+    --bg-card: #1c1f23;
+    --bg-elevated: #24282d;
+    --bg-inset: #17191d;
+    --text: #eceef0;
+    --text-muted: #9aa3ad;
+    --border: rgba(255, 255, 255, 0.09);
+    --border-strong: rgba(255, 255, 255, 0.18);
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.55);
+    --ring: 0 0 0 3px rgba(249, 115, 22, 0.35);
+
+    color-scheme: dark;
+}
+
+/* ---- Base ---- */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    color: var(--text);
+    background-color: var(--bg);
+    line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+button {
+    font-family: inherit;
+}
+
+input,
+textarea,
+select {
+    font-family: inherit;
+}
+
+img {
+    max-width: 100%;
+}
+
+::selection {
+    background: var(--primary-soft);
+    color: var(--primary-hover);
+}
+
+:focus-visible {
+    outline: none;
+    box-shadow: var(--ring);
+}
+
+/* Subtle page entrance shared by pages */
+@keyframes fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ---- Shared primitives ---- */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--primary-gradient);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.75rem 1.75rem;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(234, 88, 12, 0.35);
+    transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(234, 88, 12, 0.45);
+    filter: brightness(1.05);
+}
+
+.btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid var(--primary-soft);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}

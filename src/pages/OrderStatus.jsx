@@ -14,18 +14,28 @@ const OrderStatus = () => {
 
     useEffect(() => {
         fetchAllOrders();
-        const interval = setInterval(fetchAllOrders, 30000); // Refresh every 30 seconds
+        const interval = setInterval(fetchAllOrders, 5000); // Live refresh every 5 seconds
         return () => clearInterval(interval);
     }, []);
 
     const fetchAllOrders = async () => {
         try {
             const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/api/kitchen/orders`);
-            // Filter delivered orders and sort by date (newest first)
-            const activeOrders = response.data
+            const data = response.data;
+
+            // Background list: active (non-delivered) orders, newest first
+            const activeOrders = data
                 .filter(order => order.orderStatus !== 'DELIVERED')
                 .sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
             setAllOrders(activeOrders);
+
+            // Keep the order the user is currently viewing in sync, so a status
+            // change made in the kitchen reflects here without a reload.
+            setSelectedOrder(prev => {
+                if (!prev) return prev;
+                const fresh = data.find(o => o.orderNumber === prev.orderNumber);
+                return fresh || prev;
+            });
         } catch (error) {
             console.error('Error fetching orders:', error);
         }
@@ -106,7 +116,7 @@ const OrderStatus = () => {
                             <div className="order-info">
                                 <p>Table Number: {selectedOrder.tableNumber}</p>
                                 <p>Order Time: {formatDate(selectedOrder.orderDate)}</p>
-                                <p>Total Amount: ${selectedOrder.totalAmount.toFixed(2)}</p>
+                                <p>Total Amount: ₹{(selectedOrder.totalAmount ?? 0).toFixed(2)}</p>
                             </div>
 
                             <div className="order-items">
@@ -156,7 +166,7 @@ const OrderStatus = () => {
                                         <div className="order-list-details">
                                             <span>Table {order.tableNumber}</span>
                                             <span>{formatDate(order.orderDate)}</span>
-                                            <span>${order.totalAmount.toFixed(2)}</span>
+                                            <span>₹{(order.totalAmount ?? 0).toFixed(2)}</span>
                                         </div>
                                         <div className="order-list-items">
                                             {order.items.map((item, idx) => (

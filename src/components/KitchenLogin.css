@@ -3,108 +3,103 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem 2rem;  /* Added horizontal padding */
-    background-color: #f5f6fa;
+    padding: 1.5rem;
+    background-color: var(--bg);
 }
 
 .kitchen-login-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
-    box-sizing: border-box;  /* make padding included in width */
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    animation: fade-up 0.4s ease;
+}
+
+.kitchen-login-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-full);
+    background: var(--primary-soft);
+    color: var(--primary);
+    font-size: 1.6rem;
 }
 
 .kitchen-login-title {
-    text-align: center;
-    color: #2d3436;
-    margin-bottom: 2rem;
-    font-size: 1.8rem;
+    margin: 0 0 0.35rem;
+    color: var(--text);
+    font-size: 1.7rem;
+    font-weight: 700;
+}
+
+.kitchen-login-subtitle {
+    margin: 0 0 1.75rem;
+    color: var(--text-muted);
+    font-size: 0.95rem;
 }
 
 .kitchen-login-form {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 .form-input {
     width: 100%;
-    padding: 0.8rem 1rem;  /* Added horizontal padding */
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    padding: 0.85rem 1.1rem;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
     font-size: 1rem;
-    transition: border-color 0.3s ease;
-    box-sizing: border-box; /* ensures padding inside input */
+    background: var(--bg-card);
+    color: var(--text);
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.form-input::placeholder {
+    color: var(--text-muted);
 }
 
 .form-input:focus {
-    outline: none;
-    border-color: #0984e3;
-}
-
-.login-btn {
-    width: 100%;
-    padding: 0.8rem 1rem; /* added horizontal padding */
-    background: #0984e3;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.login-btn:hover {
-    background: #0773c5;
+    border-color: var(--primary);
+    box-shadow: var(--ring);
 }
 
 .error-message {
-    color: #e74c3c;
-    text-align: center;
-    margin-top: 1rem;
-    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    background: var(--danger-soft);
+    color: var(--danger);
+    border: 1px solid currentColor;
+    border-radius: var(--radius-sm);
+    padding: 0.55rem 0.9rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    animation: fade-up 0.2s ease;
 }
 
-/* Dark theme */
-.dark .kitchen-login-container {
-    background-color: #242424;
+/* Submit uses shared .btn-primary from index.css; keep it full width here */
+.kitchen-login-form .btn-primary {
+    width: 100%;
+    margin-top: 0.25rem;
 }
 
-.dark .kitchen-login-card {
-    background: #2d3436;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-.dark .kitchen-login-title {
-    color: #dfe6e9;
-}
-
-.dark .form-input {
-    background-color: #383f41;
-    border-color: #4a4a4a;
-    color: #fff;
-}
-
-.dark .form-input:focus {
-    border-color: #0984e3;
-}
-
-/* Responsive styles */
+/* Responsive */
 @media (max-width: 480px) {
     .kitchen-login-card {
-        padding: 1.5rem;
+        padding: 2rem 1.25rem;
     }
 
     .kitchen-login-title {
-        font-size: 1.5rem;
-    }
-
-    .form-input,
-    .login-btn {
-        padding: 0.7rem 1rem;
-        font-size: 0.95rem;
+        font-size: 1.45rem;
     }
 }

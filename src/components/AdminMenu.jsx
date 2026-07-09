@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
-import { useNavigate } from 'react-router-dom';
 import AdminMenuItemEdit from './AdminMenuItemEdit';
 import axios from '../utils/axiosConfig';
+import { FaListUl, FaPlus, FaPen } from 'react-icons/fa';
 import './AdminMenu.css';
 
 const AdminMenu = () => {
     const { isDarkTheme } = useTheme();
-    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('list');
     const [isLoading, setIsLoading] = useState(false);
     const [menuItems, setMenuItems] = useState([]);
@@ -44,29 +43,18 @@ const AdminMenu = () => {
         }
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/api/menu`, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-ADMIN-API-KEY': 'SAYAN2003'
-                }
+            await axios.post('/api/menu', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
             });
-
-            if (response.ok) {
-                const data = await response.json();
-                console.log('Response:', data);
-                alert('Menu item added successfully');
-                navigate('/');
-            } else {
-                throw new Error(`Server responded with ${response.status}`);
-            }
+            alert('Menu item added successfully');
+            setMenuItem({ name: '', description: '', category: '', price: '', isavailable: true });
+            setFile(null);
+            setActiveTab('list');
+            fetchMenuItems();
         } catch (error) {
-            console.error('Error details:', error);
-            if (error.message.includes('Server responded')) {
-                alert(`Server error: ${error.message}`);
-            } else {
-                alert(`Error: ${error.message}`);
-            }
+            console.error('Error adding menu item:', error);
+            const message = error.response?.data?.message || error.message;
+            alert(`Failed to add menu item: ${message}`);
         } finally {
             setIsLoading(false);
         }
@@ -85,33 +73,50 @@ const AdminMenu = () => {
     return (
         <div className={`admin-menu-container ${isDarkTheme ? 'dark' : ''}`}>
             <div className="admin-panel">
-                <div className="admin-tabs">
-                    <button
-                        className={`tab-btn ${activeTab === 'list' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('list')}
-                    >
-                        Menu Items List
-                    </button>
-                    <button
-                        className={`tab-btn ${activeTab === 'add' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('add')}
-                    >
-                        Add New Item
-                    </button>
+                <div className="admin-toolbar">
+                    <h2 className="admin-toolbar-title">Menu Management</h2>
+                    <div className="admin-tabs">
+                        <button
+                            className={`tab-btn ${activeTab === 'list' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('list')}
+                        >
+                            <FaListUl aria-hidden="true" />
+                            <span>Menu Items</span>
+                        </button>
+                        <button
+                            className={`tab-btn ${activeTab === 'add' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('add')}
+                        >
+                            <FaPlus aria-hidden="true" />
+                            <span>Add Item</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div className="tab-content">
                     {activeTab === 'list' ? (
                         <div className="menu-items-list">
+                            {menuItems.length === 0 && (
+                                <div className="admin-empty-state">
+                                    <p>No menu items yet. Add your first item to get started.</p>
+                                </div>
+                            )}
                             {menuItems.map(item => (
                                 <div key={item.id} className="menu-item-row">
-                                    <div className="item-info">
+                                    <img
+                                        className="admin-item-thumb"
+                                        src={item.picUrl}
+                                        alt={item.name}
+                                        loading="lazy"
+                                    />
+                                    <div className="admin-item-info">
                                         <h3>{item.name}</h3>
-                                        <p>
-                                            {item.category} - ${item.price} -
+                                        <p className="admin-item-meta">
+                                            <span className="admin-item-category">{item.category}</span>
+                                            <span className="admin-item-price">₹{item.price}</span>
                                             {item.isavailable ?
                                                 <span className="status available">Available</span> :
-                                                <span className="status unavailable">Unavailable</span>
+                                                <span className="status unavailable">Out of stock</span>
                                             }
                                         </p>
                                     </div>
@@ -119,7 +124,8 @@ const AdminMenu = () => {
                                         className="edit-btn"
                                         onClick={() => setEditingItem(item)}
                                     >
-                                        Edit
+                                        <FaPen aria-hidden="true" />
+                                        <span>Edit</span>
                                     </button>
                                 </div>
                             ))}
@@ -127,44 +133,70 @@ const AdminMenu = () => {
                     ) : (
                         <form onSubmit={handleSubmit} className="admin-menu-form">
                             <h2>Add Menu Item</h2>
-                            <input
-                                type="text"
-                                placeholder="Name"
-                                value={menuItem.name}
-                                onChange={(e) => setMenuItem({ ...menuItem, name: e.target.value })}
-                            />
-                            <textarea
-                                placeholder="Description"
-                                value={menuItem.description}
-                                onChange={(e) => setMenuItem({ ...menuItem, description: e.target.value })}
-                            />
-                            <input
-                                type="text"
-                                placeholder="Category"
-                                value={menuItem.category}
-                                onChange={(e) => setMenuItem({ ...menuItem, category: e.target.value })}
-                            />
-                            <input
-                                type="number"
-                                placeholder="Price"
-                                value={menuItem.price}
-                                onChange={(e) => setMenuItem({ ...menuItem, price: e.target.value })}
-                            />
-                            <div className="checkbox-container">
-                                <label>
+                            <div className="form-grid">
+                                <div className="form-field full">
+                                    <label htmlFor="add-name">Name</label>
                                     <input
-                                        type="checkbox"
-                                        checked={menuItem.isavailable}
-                                        onChange={(e) => setMenuItem({ ...menuItem, isavailable: e.target.checked })}
+                                        id="add-name"
+                                        type="text"
+                                        placeholder="e.g. Paneer Tikka"
+                                        value={menuItem.name}
+                                        onChange={(e) => setMenuItem({ ...menuItem, name: e.target.value })}
                                     />
-                                    Available
-                                </label>
+                                </div>
+                                <div className="form-field full">
+                                    <label htmlFor="add-description">Description</label>
+                                    <textarea
+                                        id="add-description"
+                                        placeholder="A short, tasty description"
+                                        value={menuItem.description}
+                                        onChange={(e) => setMenuItem({ ...menuItem, description: e.target.value })}
+                                    />
+                                </div>
+                                <div className="form-field">
+                                    <label htmlFor="add-category">Category</label>
+                                    <input
+                                        id="add-category"
+                                        type="text"
+                                        placeholder="e.g. Starters"
+                                        value={menuItem.category}
+                                        onChange={(e) => setMenuItem({ ...menuItem, category: e.target.value })}
+                                    />
+                                </div>
+                                <div className="form-field">
+                                    <label htmlFor="add-price">Price (₹)</label>
+                                    <input
+                                        id="add-price"
+                                        type="number"
+                                        placeholder="0"
+                                        value={menuItem.price}
+                                        onChange={(e) => setMenuItem({ ...menuItem, price: e.target.value })}
+                                    />
+                                </div>
+                                <div className="form-field full checkbox-container">
+                                    <label className="switch-label">
+                                        <input
+                                            type="checkbox"
+                                            checked={menuItem.isavailable}
+                                            onChange={(e) => setMenuItem({ ...menuItem, isavailable: e.target.checked })}
+                                        />
+                                        <span>Available for ordering</span>
+                                    </label>
+                                </div>
+                                <div className="form-field full">
+                                    <label htmlFor="add-image">Item image</label>
+                                    <input
+                                        id="add-image"
+                                        type="file"
+                                        onChange={(e) => setFile(e.target.files[0])}
+                                    />
+                                </div>
                             </div>
-                            <input
-                                type="file"
-                                onChange={(e) => setFile(e.target.files[0])}
-                            />
-                            <button type="submit" disabled={isLoading} className={isLoading ? 'loading' : ''}>
+                            <button
+                                type="submit"
+                                disabled={isLoading}
+                                className={`btn-primary admin-submit-btn ${isLoading ? 'loading' : ''}`}
+                            >
                                 {isLoading ? (
                                     <div className="spinner-container">
                                         <div className="spinner"></div>

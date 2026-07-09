@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { FaCreditCard, FaLock } from 'react-icons/fa';
 import styles from './RazorpayPayment.module.css';
 
 const RazorpayPayment = () => {
@@ -16,7 +17,6 @@ const RazorpayPayment = () => {
         if (!orderDetails) {
             navigate('/cart');
         }
-        console.log(import.meta.env.VITE_REACT_APP_API_URL);
     }, [orderDetails, navigate]);
 
     useEffect(() => {
@@ -48,48 +48,51 @@ const RazorpayPayment = () => {
             const order = await response.json();
 
             const options = {
-                key: "rzp_test_QVVYHJR2HzB6Ap",
+                key: import.meta.env.VITE_RAZORPAY_KEY_ID,
                 amount: order.amount,
-                currency: order.currency,
-                name: "Restaurant Name",
-                description: `Order #${orderDetails.order.id}`,
+                currency: 'INR',
+                name: "Food Corner",
+                description: `Order #${orderDetails.order.orderNumber}`,
                 order_id: order.id,
                 handler: async function (response) {
+                    // Disable the pay button immediately after payment
+                    setIsLoading(true);
+
                     try {
-                        // Disable the pay button immediately after payment
-                        setIsLoading(true);
+                        // Don't wait forever on confirmation — the payment itself already succeeded
+                        const controller = new AbortController();
+                        const timeout = setTimeout(() => controller.abort(), 30000);
 
                         const confirmResponse = await fetch(
                             `${import.meta.env.VITE_REACT_APP_API_URL}/api/payment/confirm?orderId=${orderDetails.order.id}&razorpayPaymentId=${response.razorpay_payment_id}`,
-                            { method: 'POST' }
+                            { method: 'POST', signal: controller.signal }
                         );
+                        clearTimeout(timeout);
 
                         if (!confirmResponse.ok) {
                             throw new Error('Payment confirmation failed');
                         }
-
-                        // Clear cart and navigate immediately
-                        clearCart();
-                        // Navigate to thank you page and replace current history entry
-                        navigate('/thankyou', {
-                            state: {
-                                orderId: orderDetails.order.id,
-                                paymentId: response.razorpay_payment_id,
-                                orderDetails: orderDetails
-                            },
-                            replace: true // This will replace the current entry in history
-                        });
                     } catch (err) {
-                        console.error("Failed to process payment:", err);
-                        setError("Payment succeeded but failed to complete the process.");
-                        setIsLoading(false); // Re-enable the button only on error
+                        // Payment is complete at Razorpay; log and continue rather than stranding the user
+                        console.error('Payment confirmation call failed:', err);
                     }
+
+                    clearCart();
+                    // Navigate to thank you page and replace current history entry
+                    navigate('/thankyou', {
+                        state: {
+                            orderId: orderDetails.order.id,
+                            paymentId: response.razorpay_payment_id,
+                            orderDetails: orderDetails
+                        },
+                        replace: true // This will replace the current entry in history
+                    });
                 },
                 prefill: {
                     name: "Customer Name"
                 },
                 theme: {
-                    color: "#3399cc"
+                    color: "#ea580c"
                 },
                 modal: {
                     ondismiss: function () {
@@ -113,12 +116,15 @@ const RazorpayPayment = () => {
     return (
         <div className={styles.paymentContainer}>
             <div className={styles.paymentCard}>
+                <div className={styles.cardIcon}>
+                    <FaCreditCard />
+                </div>
                 <h2 className={styles.title}>Complete Your Payment</h2>
                 <div className={styles.orderSummary}>
-                    <p>Order #{orderDetails.order.id}</p>
-                    <p>Table Number: {orderDetails.tableNumber}</p>
-                    <p>Total Items: {orderDetails.items.length}</p>
-                    <p>Total Amount: ₹{orderDetails.total}</p>
+                    <p><span>Order</span> <span>#{orderDetails.order.orderNumber}</span></p>
+                    <p><span>Table Number</span> <span>{orderDetails.tableNumber}</span></p>
+                    <p><span>Total Items</span> <span>{orderDetails.items.length}</span></p>
+                    <p><span>Total Amount</span> <span>₹{orderDetails.total.toFixed(2)}</span></p>
                 </div>
                 {error && <p className={styles.error}>{error}</p>}
                 <button
@@ -126,8 +132,18 @@ const RazorpayPayment = () => {
                     className={styles.payButton}
                     disabled={isLoading}
                 >
-                    {isLoading ? 'Processing...' : 'Pay Now'}
+                    {isLoading ? (
+                        <>
+                            <span className={styles.buttonSpinner}></span>
+                            Processing...
+                        </>
+                    ) : (
+                        'Pay Now'
+                    )}
                 </button>
+                <p className={styles.secureNote}>
+                    <FaLock /> Secured by Razorpay
+                </p>
             </div>
         </div>
     );

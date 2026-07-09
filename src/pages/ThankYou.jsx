@@ -1,11 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import './ThankYou.css';
 
 const ThankYou = () => {
     const { isDarkTheme } = useTheme();
-    const orderNumber = Math.floor(100000 + Math.random() * 900000);
+    const location = useLocation();
+    const orderNumber = location.state?.orderDetails?.order?.orderNumber;
 
     return (
         <div className={`thank-you-container ${isDarkTheme ? 'dark' : ''}`}>
@@ -18,8 +19,8 @@ const ThankYou = () => {
                 <h1 className="thank-you-title">Payment Successful!</h1>
                 <div className="order-details">
                     <p>Your order has been successfully placed and payment received.</p>
-                    <p className="order-number">Order Number: #{orderNumber}</p>
-                    <p>We'll send you an email with the order details and tracking information.</p>
+                    {orderNumber && <p className="order-number">Order Number: #{orderNumber}</p>}
+                    <p>We've sent the bill to your email. You can track your order from the Track Order page.</p>
                 </div>
                 <div className="action-buttons">
                     <Link to="/" className="continue-shopping-btn">

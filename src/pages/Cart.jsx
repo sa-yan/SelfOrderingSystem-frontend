@@ -3,10 +3,11 @@ import axios from 'axios';
 import Header from '../components/Header';
 import { useCart } from '../context/CartContext';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaShoppingBasket } from 'react-icons/fa';
 import './Cart.css';
 
 const Cart = () => {
-    const { cartItems, addToCart, removeFromCart, clearCart } = useCart();
+    const { cartItems, addToCart, removeFromCart } = useCart();
     const [tableNumber, setTableNumber] = useState('');
     const [email, setEmail] = useState(''); // Add email state
     const [isProcessing, setIsProcessing] = useState(false);
@@ -90,8 +91,10 @@ const Cart = () => {
             <>
                 <Header />
                 <div className="cart-empty">
+                    <FaShoppingBasket className="cart-empty-icon" />
                     <h2>Your cart is empty</h2>
-                    <Link to="/" className="continue-shopping">Continue Shopping</Link>
+                    <p>Looks like you haven't added anything yet.</p>
+                    <Link to="/" className="btn-primary continue-shopping">Continue Shopping</Link>
                 </div>
             </>
         );
@@ -102,13 +105,14 @@ const Cart = () => {
             <Header />
             <div className="cart-container">
                 <h2>Your Cart</h2>
+                <div className="cart-layout">
                 <div className="cart-items">
                     {cartItemsDetails.map(item => (
                         <div key={item.id} className="cart-item">
                             <img src={item.picUrl} alt={item.name} />
                             <div className="cart-item-info">
                                 <h3>{item.name}</h3>
-                                <p className="item-price">${item.price.toFixed(2)}</p>
+                                <p className="item-price">₹{item.price.toFixed(2)}</p>
                             </div>
                             <div className="cart-quantity-controls">
                                 <button className="quantity-btn" onClick={() => removeFromCart(item)}>-</button>
@@ -117,12 +121,13 @@ const Cart = () => {
                             </div>
                             <p className="item-total">
                                 <span>Total:</span>
-                                ${(item.price * item.quantity).toFixed(2)}
+                                ₹{(item.price * item.quantity).toFixed(2)}
                             </p>
                         </div>
                     ))}
                 </div>
                 <div className="cart-summary">
+                    <h3 className="cart-summary-title">Order Summary</h3>
                     <div className="table-number-input">
                         <label htmlFor="tableNumber">Table Number:</label>
                         <input
@@ -147,14 +152,18 @@ const Cart = () => {
                     </div>
                     {error && <p className="error-message">{error}</p>}
                     {successMessage && <p className="success-message">{successMessage}</p>}
-                    <h3>Total: ${total.toFixed(2)}</h3>
+                    <h3 className="cart-total">
+                        <span>Total</span>
+                        <span className="cart-total-amount">₹{total.toFixed(2)}</span>
+                    </h3>
                     <button
-                        className="checkout-btn"
+                        className="btn-primary checkout-btn"
                         onClick={handleCheckout}
                         disabled={isProcessing}
                     >
-                        {isProcessing ? 'Processing...' : 'Place Order'}
+                        {isProcessing ? (<><span className="spinner checkout-spinner"></span>Processing...</>) : 'Place Order'}
                     </button>
+                </div>
                 </div>
             </div>
         </>

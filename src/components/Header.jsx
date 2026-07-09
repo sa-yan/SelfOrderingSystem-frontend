@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { FaShoppingCart, FaUser, FaUtensils, FaBars, FaTimes } from 'react-icons/fa';
+import { FaShoppingCart, FaUser, FaUtensils, FaBars, FaTimes, FaMoon, FaSun } from 'react-icons/fa';
 import { useTheme } from '../context/ThemeContext';
 import { useCart } from '../context/CartContext';
 import './Header.css';
 
 const Header = () => {
-    const { isDarkTheme } = useTheme();
+    const { isDarkTheme, toggleTheme } = useTheme();
     const { cartItems } = useCart();
     const location = useLocation();
     const isCartPage = location.pathname === '/cart';
@@ -25,7 +25,7 @@ const Header = () => {
                     <span className="logo-accent">Corner</span>
                 </Link>
 
-                <button className="mobile-menu-btn" onClick={toggleMenu}>
+                <button className="mobile-menu-btn" onClick={toggleMenu} aria-label="Toggle navigation">
                     {menuOpen ? <FaTimes /> : <FaBars />}
                 </button>
 
@@ -33,17 +33,25 @@ const Header = () => {
                     <NavLink to="/" className="nav-link" onClick={closeMenu}>
                         Menu
                     </NavLink>
-                    <NavLink to="/admin" className="nav-link admin-link" onClick={closeMenu}>
-                        <FaUser className="nav-icon" /> Admin
+                    <NavLink to="/track-order" className="nav-link" onClick={closeMenu}>
+                        Track Order
                     </NavLink>
                     <NavLink to="/kitchen" className="nav-link" onClick={closeMenu}>
                         <FaUtensils className="nav-icon" /> Kitchen
                     </NavLink>
-                    <NavLink to="/track-order" className="nav-link" onClick={closeMenu}>
-                        Track Order
+                    <NavLink to="/admin" className="nav-link admin-link" onClick={closeMenu}>
+                        <FaUser className="nav-icon" /> Admin
                     </NavLink>
+                    <button
+                        className="theme-toggle"
+                        onClick={toggleTheme}
+                        aria-label="Toggle dark mode"
+                        title={isDarkTheme ? 'Switch to light mode' : 'Switch to dark mode'}
+                    >
+                        {isDarkTheme ? <FaSun /> : <FaMoon />}
+                    </button>
                     {!isCartPage && (
-                        <Link to="/cart" className="nav-link cart-link" onClick={closeMenu}>
+                        <Link to="/cart" className="cart-link" onClick={closeMenu} aria-label="Cart">
                             <FaShoppingCart className="nav-icon" />
                             {cartItemCount > 0 && (
                                 <span className="cart-badge">{cartItemCount}</span>
